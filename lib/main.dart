@@ -1,23 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_visual_code/factory/task_factory.dart';
 import 'package:flutter_visual_code/models/task.dart';
+import 'package:flutter_visual_code/views/detail_task.dart';
 
 void main() {
-  runApp(ToDoList());
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.limeAccent[800],
+        fontFamily: 'Georgia',
+      ),
+        home: ToDoList());
+  }
 }
 
 class ToDoList extends StatelessWidget {
 
-  ToDoList({super.key});
-
+  ToDoList({key}) : super(key: key);
+ 
   //tasks.map((e) => Container(child: Text("Hola"))).toList()
 
   List<Task> tasks = TaskFactory().generateTask();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           leading: const IconButton(
             icon: Icon(Icons.check),
@@ -27,6 +42,7 @@ class ToDoList extends StatelessWidget {
           title: const Text("Lista de tareas"),
         ),
         body: Container(
+          
           padding: const EdgeInsets.all(20),
           child: Column(
             children: 
@@ -41,7 +57,15 @@ class ToDoList extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
-                    const Icon(Icons.arrow_circle_right_outlined),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DetailTask()) 
+                        );
+                      }, 
+                      icon: const Icon(Icons.arrow_circle_right_outlined)
+                      ),
                     Text(task.name()),
                     task.status() ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank_outlined),
                   ],
@@ -49,7 +73,6 @@ class ToDoList extends StatelessWidget {
               )).toList()
           ),
         )
-      ),
-    );
+      );
   }
 }
