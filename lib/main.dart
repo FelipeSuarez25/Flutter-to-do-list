@@ -17,6 +17,10 @@ class MaterialAppCustom extends StatelessWidget {
    }
 }
 
+///separar ingreso de creación de
+///oauth2 para inicio de sección con googlw
+///
+
 class ToDoList extends StatelessWidget {
 
   ToDoList({super.key});
@@ -38,7 +42,9 @@ class ToDoList extends StatelessWidget {
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
+
           child: Column(
+
             children: 
               tasks.map((task) => Container(
                 height: 50,
@@ -49,16 +55,65 @@ class ToDoList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: Row(
+
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
-                    const Icon(Icons.arrow_circle_right_outlined),
+                    IconButton(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      iconSize: 40,
+                      color: Colors.blueGrey,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+
+                          MaterialPageRoute(builder: (context) =>  SegundaPantalla(task)),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.arrow_circle_right_outlined,
+                      ),
+                    )
+
+                    ,
                     Text(task.name()),
                     task.status() ? const Icon(Icons.check_box) : const Icon(Icons.check_box_outline_blank_outlined),
                   ],
+
                 ),
               )).toList()
+
           ),
-        )
+
+        ),
+
       );
+  }
+}
+
+class SegundaPantalla extends StatelessWidget {
+   SegundaPantalla(this.t);
+
+ Task t;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:  Text(t.name()),
+      ),
+      body: Center(
+        child: SelectionArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:  <Widget>[
+              Text(t.name()),
+              Text(t.endDate()),
+              t.status() ? Text("True") : Text("False"),
+          //    Text(t.status() as String),
+
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
